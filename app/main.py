@@ -1,3 +1,4 @@
+from flask import Flask
 import configparser
 import json
 import asyncio
@@ -10,6 +11,8 @@ from telethon.tl.functions.messages import (GetHistoryRequest)
 from telethon.tl.types import (
     PeerChannel
 )
+
+app = Flask(__name__)
 
 
 # some functions to parse json date
@@ -102,7 +105,7 @@ async def main(phone):
                     # print(message_str)
                     message_str = f"Woohoo! Found {keyword} in a Chollo!:\n" + message_str
                     print(message_str)
-                    # await client.send_message(entity="https://t.me/chollometro_alerts",message=message_str)
+                    await client.send_message(entity="https://t.me/chollometro_alerts",message=message_str)
             all_messages.append(message.to_dict())
 
         offset_id = messages[len(messages) - 1].id
@@ -112,11 +115,12 @@ async def main(phone):
             break
         
 
-    with open('channel_messages.json', 'w') as outfile:
-        json.dump(all_messages, outfile, cls=DateTimeEncoder)
+    # with open('channel_messages.json', 'w') as outfile:
+    #     json.dump(all_messages, outfile, cls=DateTimeEncoder)
 
 
     
-
-with client:
-    client.loop.run_until_complete(main(phone))
+@app.route("/")
+def home_view():
+    with client:
+        client.loop.run_until_complete(main(phone))
