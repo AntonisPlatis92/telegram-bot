@@ -15,22 +15,22 @@ from telethon.tl.types import (
 app = Flask(__name__)
 
 
-# some functions to parse json date
-class DateTimeEncoder(json.JSONEncoder):
-    def default(self, o):
-        if isinstance(o, datetime):
-            return o.isoformat()
+# # some functions to parse json date
+# class DateTimeEncoder(json.JSONEncoder):
+#     def default(self, o):
+#         if isinstance(o, datetime):
+#             return o.isoformat()
 
-        if isinstance(o, bytes):
-            return list(o)
+#         if isinstance(o, bytes):
+#             return list(o)
 
-        return json.JSONEncoder.default(self, o)
+#         return json.JSONEncoder.default(self, o)
 
 
 # Reading Configs
 config = configparser.ConfigParser()
-config.read("config.ini")
-
+config.read("app/config.ini")
+print(config)
 # Setting configuration values
 api_id = config['Telegram']['api_id']
 api_hash = config['Telegram']['api_hash']
@@ -48,7 +48,7 @@ keywords = ["maleta", "tv", "stadia", "pelo", "olaplex"]
 # Create the client and connect
 client = TelegramClient(username, api_id, api_hash)
 
-async def main(phone):
+async def raise_alerts(phone):
     await client.start()
     print("Client Created")
     # Ensure you're authorized
@@ -78,6 +78,8 @@ async def main(phone):
     total_messages = 0
     total_count_limit = 1000
 
+    chollos_found = 0
+
     while True:
         # print("Current Offset ID is:", offset_id, "; Total Messages:", total_messages)
         history = await client(GetHistoryRequest(
@@ -97,13 +99,15 @@ async def main(phone):
             message_str = message.to_dict()["message"]
             message_date = message.to_dict()["date"].replace(tzinfo=None)
             
+            mins_passed = int((datetime.utcnow() - message_date).total_seconds()/60)
             hours_passed = int((datetime.utcnow() - message_date).total_seconds()/3600)
             # print(hours_passed)
             for keyword in keywords:
-                if keyword in message_str.lower() and "TOP 10 CHOLLOS DE HOY" not in message_str and hours_passed <= 1:
+                if keyword in message_str.lower() and "TOP 10 CHOLLOS DE HOY" not in message_str and hours_passed < 1:
+                    chollos_found += 1
                     # print(f"Woohoo! Found {keyword} in a Chollo!:")
                     # print(message_str)
-                    message_str = f"Woohoo! Found {keyword} in a Chollo!:\n" + message_str
+                    message_str = f"Woohoo! Found {keyword} in a Chollo!\nPublished at: {message_date} ({mins_passed} mins ago)\n" + message_str
                     print(message_str)
                     await client.send_message(entity="https://t.me/chollometro_alerts",message=message_str)
             all_messages.append(message.to_dict())
@@ -113,14 +117,14 @@ async def main(phone):
         total_messages = len(all_messages)
         if total_count_limit != 0 and total_messages >= total_count_limit:
             break
-        
 
-    # with open('channel_messages.json', 'w') as outfile:
-    #     json.dump(all_messages, outfile, cls=DateTimeEncoder)
+    return chollos_found
+
 
 
     
 @app.route("/")
-def home_view():
-    with client:
-        client.loop.run_until_complete(main(phone))
+async def home_view() -> str:
+    async with client:
+        chollos_found = await raise_alerts(phone)
+    return f"Found {chollos_found} Chollos"
