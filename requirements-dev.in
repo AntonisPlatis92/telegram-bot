@@ -1,0 +1,20 @@
+-c requirements.txt
+# code formatting
+yapf
+# linting
+flake8
+flake8-annotations
+flake8-bandit
+flake8-builtins
+flake8-commas
+flake8-eradicate
+flake8-import-order
+flake8-print
+flake8-quotes
+flake8-variables-names
+pep8-naming
+# static analysis
+mypy
+# extra
+pandas-stubs
+sqlalchemy-stubs
