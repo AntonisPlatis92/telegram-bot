@@ -10,5 +10,5 @@ pyasn1==0.4.8
     # via rsa
 rsa==4.8
     # via telethon
-telethon==1.23.0
+telethon==1.24.0
     # via -r requirements.in
