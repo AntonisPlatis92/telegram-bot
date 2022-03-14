@@ -28,12 +28,7 @@ app = Flask(__name__)
 #         return json.JSONEncoder.default(self, o)
 
 # # you can get telegram development credentials in telegram API Development Tools
-# api_id = 9319801
-# api_hash = "f2b36a2da4cc5c0dfb9420f13fa31b2f"
-
 # # use full phone number including + and country code
-# phone = "+306932771509"
-# username = "Antonis_Platis"
 
 # Reading Configs
 config = configparser.ConfigParser()
@@ -42,8 +37,6 @@ config.read("app/config.ini")
 api_id = config['Telegram']['api_id']
 api_hash = config['Telegram']['api_hash']
 
-print(api_id)
-print(api_hash)
 
 api_hash = str(api_hash)
 
