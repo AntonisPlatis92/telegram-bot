@@ -47,8 +47,8 @@ print(api_hash)
 
 api_hash = str(api_hash)
 
-phone = config['Telegram']['phone']
-username = config['Telegram']['username']
+# phone = config['Telegram']['phone']
+# username = config['Telegram']['username']
 
 keywords = ["maleta", "tv", "stadia", "pelo", "olaplex"]
 
