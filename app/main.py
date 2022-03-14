@@ -12,6 +12,7 @@ from telethon.tl.types import (
     PeerChannel
 )
 
+print(__name__)
 app = Flask(__name__)
 
 
