@@ -4,14 +4,26 @@
 #
 #    pip-compile requirements.in
 #
+aioflask==0.4.0
+    # via -r requirements.in
+asgiref==3.5.0
+    # via uvicorn
 click==8.0.4
-    # via flask
+    # via
+    #   flask
+    #   uvicorn
 colorama==0.4.4
     # via click
 flask==2.0.3
-    # via -r requirements.in
+    # via aioflask
+greenlet==1.1.2
+    # via greenletio
+greenletio==0.9.0
+    # via aioflask
 gunicorn==20.1.0
     # via -r requirements.in
+h11==0.13.0
+    # via uvicorn
 itsdangerous==2.1.1
     # via flask
 jinja2==3.0.3
@@ -26,6 +38,8 @@ rsa==4.8
     # via telethon
 telethon==1.24.0
     # via -r requirements.in
+uvicorn==0.17.6
+    # via aioflask
 werkzeug==2.0.3
     # via flask
 
