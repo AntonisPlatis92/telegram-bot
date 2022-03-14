@@ -12,7 +12,7 @@ from telethon.tl.types import (
     PeerChannel
 )
 
-print(__name__)
+
 app = Flask(__name__)
 
 
@@ -27,40 +27,38 @@ app = Flask(__name__)
 
 #         return json.JSONEncoder.default(self, o)
 
-# you can get telegram development credentials in telegram API Development Tools
-api_id = 9319801
-api_hash = "f2b36a2da4cc5c0dfb9420f13fa31b2f"
+# # you can get telegram development credentials in telegram API Development Tools
+# api_id = 9319801
+# api_hash = "f2b36a2da4cc5c0dfb9420f13fa31b2f"
 
-# use full phone number including + and country code
-phone = "+306932771509"
-username = "Antonis_Platis"
+# # use full phone number including + and country code
+# phone = "+306932771509"
+# username = "Antonis_Platis"
 
-# # Reading Configs
-# config = configparser.ConfigParser()
-# config.read("app/config.ini")
-# print(config)
-# # Setting configuration values
-# api_id = config['Telegram']['api_id']
-# api_hash = config['Telegram']['api_hash']
+# Reading Configs
+config = configparser.ConfigParser()
+config.read("app/config.ini")
+# Setting configuration values
+api_id = config['Telegram']['api_id']
+api_hash = config['Telegram']['api_hash']
 
 print(api_id)
 print(api_hash)
 
 api_hash = str(api_hash)
 
-# phone = config['Telegram']['phone']
-# username = config['Telegram']['username']
+phone = config['Telegram']['phone']
+username = config['Telegram']['username']
 
-keywords = ["maleta", "tv", "stadia", "pelo", "olaplex"]
+keywords = ["maleta", "tv", "stadia", "pelo", "olaplex", "switch"]
 
 # Create the client and connect
-print("Initiating client")
 client = TelegramClient(username, api_id, api_hash)
-print("Initiated client")
+
 async def raise_alerts(phone):
-    print("Called raise_alerts")
+
     await client.start()
-    print("Client Created")
+
     # Ensure you're authorized
     if await client.is_user_authorized() == False:
         await client.send_code_request(phone)
@@ -135,7 +133,6 @@ async def raise_alerts(phone):
     
 @app.route("/")
 async def home_view() -> str:
-    print("Calling raise_alerts")
     async with client:
         chollos_found = await raise_alerts(phone)
     return f"Found {chollos_found} Chollos"
