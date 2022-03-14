@@ -53,8 +53,9 @@ api_hash = str(api_hash)
 keywords = ["maleta", "tv", "stadia", "pelo", "olaplex"]
 
 # Create the client and connect
+print("Initiating client")
 client = TelegramClient(username, api_id, api_hash)
-
+print("Initiated client")
 async def raise_alerts(phone):
     await client.start()
     print("Client Created")
