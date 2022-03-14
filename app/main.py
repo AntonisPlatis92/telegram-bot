@@ -57,6 +57,7 @@ print("Initiating client")
 client = TelegramClient(username, api_id, api_hash)
 print("Initiated client")
 async def raise_alerts(phone):
+    print("Called raise_alerts")
     await client.start()
     print("Client Created")
     # Ensure you're authorized
@@ -133,6 +134,7 @@ async def raise_alerts(phone):
     
 @app.route("/")
 async def home_view() -> str:
+    print("Calling raise_alerts")
     async with client:
         chollos_found = await raise_alerts(phone)
     return f"Found {chollos_found} Chollos"
