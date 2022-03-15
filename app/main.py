@@ -77,10 +77,10 @@ async def raise_alerts(phone):
     limit = 100
     all_messages = []
     total_messages = 0
-    total_count_limit = 1000
+    total_count_limit = 100
 
     chollos_found = 0
-
+    print("Starting")
     while True:
         # print("Current Offset ID is:", offset_id, "; Total Messages:", total_messages)
         history = await client(GetHistoryRequest(
@@ -96,7 +96,9 @@ async def raise_alerts(phone):
         if not history.messages:
             break
         messages = history.messages
+        i=1
         for message in messages:
+            print(f"Checking message {i}")
             message_str = message.to_dict()["message"]
             message_date = message.to_dict()["date"].replace(tzinfo=None)
             
@@ -112,12 +114,15 @@ async def raise_alerts(phone):
                     print(message_str)
                     await client.send_message(entity="https://t.me/chollometro_alerts",message=message_str)
             all_messages.append(message.to_dict())
+            i += 1
 
         offset_id = messages[len(messages) - 1].id
-        # print(all_messages)
+        print(all_messages)
         total_messages = len(all_messages)
         if total_count_limit != 0 and total_messages >= total_count_limit:
             break
+
+    print("Finished")
 
     return chollos_found
 
