@@ -117,7 +117,7 @@ async def raise_alerts(phone):
             i += 1
 
         offset_id = messages[len(messages) - 1].id
-        print(all_messages)
+        # print(all_messages)
         total_messages = len(all_messages)
         if total_count_limit != 0 and total_messages >= total_count_limit:
             break
