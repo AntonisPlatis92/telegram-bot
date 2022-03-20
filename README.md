@@ -1,0 +1,1 @@
+A python Web Application to read a Telegram Channel and raise alerts on another channel when predefined keywords appear in new messages. Runs on Flask server hosted at Heroku.

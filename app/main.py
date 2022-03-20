@@ -16,20 +16,6 @@ from telethon.tl.types import (
 app = Flask(__name__)
 
 
-# # some functions to parse json date
-# class DateTimeEncoder(json.JSONEncoder):
-#     def default(self, o):
-#         if isinstance(o, datetime):
-#             return o.isoformat()
-
-#         if isinstance(o, bytes):
-#             return list(o)
-
-#         return json.JSONEncoder.default(self, o)
-
-# # you can get telegram development credentials in telegram API Development Tools
-# # use full phone number including + and country code
-
 # Reading Configs
 config = configparser.ConfigParser()
 config.read("app/config.ini")
@@ -108,8 +94,6 @@ async def raise_alerts(phone):
             for keyword in keywords:
                 if keyword in message_str.lower() and "TOP 10 CHOLLOS DE HOY" not in message_str and hours_passed < 1:
                     chollos_found += 1
-                    # print(f"Woohoo! Found {keyword} in a Chollo!:")
-                    # print(message_str)
                     message_str = f"Woohoo! Found {keyword} in a Chollo!\nPublished at: {message_date} ({mins_passed} mins ago)\n" + message_str
                     print(message_str)
                     await client.send_message(entity="https://t.me/chollometro_alerts",message=message_str)
